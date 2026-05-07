@@ -18,7 +18,7 @@ type ThemeContextType = {
 
 // Export ThemeContext so it can be imported from hooks
 export const ThemeContext = createContext<ThemeContextType>({
-  theme: 'system',
+  theme: 'light',
   setTheme: () => undefined,
   setThemeRGB: () => undefined,
   setThemeName: () => undefined,
@@ -33,14 +33,9 @@ export interface ThemeProviderProps {
 }
 
 /**
- * Check if theme is dark
+ * Check if theme is dark — always false (light mode enforced)
  */
-export const isDark = (theme: string): boolean => {
-  if (theme === 'system') {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-  return theme === 'dark';
-};
+export const isDark = (_theme: string): boolean => false;
 
 /**
  * Validate that a parsed value looks like an IThemeRGB object
@@ -59,20 +54,9 @@ const isValidThemeColors = (value: unknown): value is IThemeRGB => {
 };
 
 /**
- * Get initial theme from localStorage or default to 'system'
+ * Always returns 'light' — dark mode is disabled
  */
-const getInitialTheme = (): string => {
-  if (typeof window === 'undefined') return 'system';
-  try {
-    const stored = localStorage.getItem(THEME_KEY);
-    if (stored && ['light', 'dark', 'system'].includes(stored)) {
-      return stored;
-    }
-  } catch {
-    // localStorage not available
-  }
-  return 'system';
-};
+const getInitialTheme = (): string => 'light';
 
 /**
  * Get initial theme colors from localStorage
@@ -123,14 +107,8 @@ export function ThemeProvider({
   // Track if props have been initialized
   const initialized = useRef(false);
 
-  const setTheme = useCallback((newTheme: string) => {
-    setThemeState(newTheme);
-    if (typeof window === 'undefined') return;
-    try {
-      localStorage.setItem(THEME_KEY, newTheme);
-    } catch {
-      // localStorage not available
-    }
+  const setTheme = useCallback((_newTheme: string) => {
+    setThemeState('light');
   }, []);
 
   const setThemeRGB = useCallback((colors?: IThemeRGB) => {
@@ -196,19 +174,6 @@ export function ThemeProvider({
     applyThemeMode(theme);
   }, [theme, applyThemeMode]);
 
-  // Listen for system theme changes when theme is 'system'
-  useEffect(() => {
-    if (theme !== 'system') return;
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = () => {
-      applyThemeMode('system');
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme, applyThemeMode]);
-
   // Apply dynamic color theme
   useEffect(() => {
     if (themeRGB) {
@@ -218,10 +183,9 @@ export function ThemeProvider({
 
   // Reset theme function
   const resetTheme = useCallback(() => {
-    setTheme('system');
+    setTheme('light');
     setThemeRGB(undefined);
     setThemeName(undefined);
-    // Remove any custom CSS variables
     const root = document.documentElement;
     const customProps = Array.from(root.style).filter((prop) => prop.startsWith('--'));
     customProps.forEach((prop) => root.style.removeProperty(prop));
