@@ -4,6 +4,7 @@ import { ErrorMessage } from '~/components/Auth/ErrorMessage';
 import { TranslationKeys, useLocalize } from '~/hooks';
 import SocialLoginRender from './SocialLoginRender';
 import { BlinkAnimation } from './BlinkAnimation';
+import PWAInstallBanner from './PWAInstallBanner';
 import { Banner } from '../Banners';
 import Footer from './Footer';
 
@@ -91,6 +92,7 @@ function AuthLayout({
         </div>
       </main>
       <Footer startupConfig={startupConfig} />
+      <PWAInstallBanner />
     </div>
   );
 }
