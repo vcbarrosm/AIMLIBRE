@@ -83,13 +83,13 @@ export default function PWAInstallBanner() {
       <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl dark:bg-gray-800">
         <div className="mb-4 flex items-center gap-3">
           <span className="text-3xl">📲</span>
-          <span className="text-lg font-bold text-gray-900 dark:text-white">IA Familiar</span>
+          <span className="text-lg font-bold text-gray-900 dark:text-white">AIMLibre</span>
         </div>
 
         {mode === 'android' ? (
           <>
             <p className="mb-6 text-sm text-gray-600 dark:text-gray-300">
-              ¡Instala <strong>IA Familiar</strong> en tu teléfono para un acceso rápido!
+              ¡Instala <strong>AIMLibre</strong> en tu teléfono para un acceso rápido!
             </p>
             <div className="flex flex-col gap-2">
               <button
@@ -109,7 +109,7 @@ export default function PWAInstallBanner() {
         ) : (
           <>
             <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">
-              Para instalar <strong>IA Familiar</strong>, toca el ícono de{' '}
+              Para instalar <strong>AIMLibre</strong>, toca el ícono de{' '}
               <strong>Compartir</strong> <span aria-hidden="true">⬆️</span> en tu navegador y
               selecciona <strong>«Añadir a la pantalla de inicio»</strong>.
             </p>
