@@ -247,11 +247,13 @@ export function EndpointItem({ endpoint, endpointIndex }: EndpointItemProps) {
 }
 
 export function renderEndpoints(mappedEndpoints: Endpoint[]) {
-  return mappedEndpoints.map((endpoint, index) => (
-    <EndpointItem
-      endpoint={endpoint}
-      endpointIndex={index}
-      key={`endpoint-${endpoint.value}-${index}`}
-    />
-  ));
+  return mappedEndpoints
+    .filter((endpoint) => endpoint.value !== 'Motor de Imágenes')
+    .map((endpoint, index) => (
+      <EndpointItem
+        endpoint={endpoint}
+        endpointIndex={index}
+        key={`endpoint-${endpoint.value}-${index}`}
+      />
+    ));
 }
